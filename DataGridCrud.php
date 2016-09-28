@@ -11,9 +11,9 @@
 		private $listRows = array();
 		private $page;
 		private $rows;
-        private $socios;
-        private $credito;
-        private $cuotaSocial;
+        	private $socios;
+        	private $credito;
+        	private $cuotaSocial;
         
         
 		public function setPage($p){
