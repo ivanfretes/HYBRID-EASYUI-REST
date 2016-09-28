@@ -1,6 +1,5 @@
 <?
 
-	require 'creditoClass.php';
 
 
 	class DataGridEasyUi {
