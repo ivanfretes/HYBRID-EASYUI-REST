@@ -1,24 +1,28 @@
 <?
 
+	require 'creditoClass.php';
+
+
 	class DataGridEasyUi {
 		private $table;
 		private $id;
-		private $listColumn = array();
+		private $listColumn = array(); //Nombre de columnas
 		private $cantVariables; //Cantidad de Datos retornados desde la url
-		private $request = array();
-		protected $query;
+		private $request = array(); //Valores en la URL
+		protected $query; 
 		private $con;
 		private $listRows = array();
-		private $page;
+		private $page; 
 		private $rows;
-        	private $socios;
-        	private $credito;
-        	private $cuotaSocial;
-        
-        
+
+
+        //Actualiza la pagina del datagrid
 		public function setPage($p){
 			$this->page = $p;
 		}
+
+
+		//Actualiza la cantidad de fila del datagrid
 		public function setRows($r){
 			$this->rows = $r;
 		}
@@ -47,7 +51,7 @@
 			}
 		}*/
 
-
+		//Retorna los registros buscados
 		public function get(){
 			if ($this->verifiedId()){
 				$this->getRegistro();
@@ -65,12 +69,14 @@
 			return "{\"total\":\"".$cantRows."\",\"rows\":".json_encode($this->listRows)."}";
 		}
 
+
+
 		//Retorna un solo registro
 		public function getRegistro(){
 			$this->getDataNameColumn();
 			$idReg = $this->listColumn[0];
 			
-			$this->query = "SELECT * FROM $this->table WHERE $idReg = $this->id ";
+			$this->query = "SELECT * FROM $this->table WHERE $idReg = $this->id ORDER BY $idReg DESC";
 		}
 
 		//Retorna la cantidad de registros
@@ -81,13 +87,14 @@
 
 		}
 
-		//Retorna todos los registros
+		//Retorna TODOS los registros de la tabla
 		public function getTable(){
 			$offset = ($this->page - 1) * $this->rows;
 			$this->query = "SELECT * FROM $this->table LIMIT $offset,$this->rows";
 		}
 
-		//Verifica si el identificado esta inicializado
+		//Verifica que la cantidad de variable en la url sean mas de uno
+		//En dicho caso asigna el valor de ID
 		public function verifiedId(){
 			if($this->cantVariables > 1) {
 				$this->id = $this->request[1];
@@ -96,6 +103,7 @@
 			return 0;
 		}
 
+		// Inserta un nuevo registro en la tabla
 		public function set($data = array()){
 			$this->getDataNameColumn();
 			$columnName = implode(",", $this->listColumn);
@@ -104,6 +112,8 @@
 		}
 
 
+
+		//Edita la tabla en cuestion en base al id
 		public function edit($data){
 			$this->getDataNameColumn();
 			$idReg = $this->listColumn[0];
@@ -119,7 +129,7 @@
 
 		}
 
-
+		//Elimina en base a la table el id Pasado
 		public function remove($id){
 			$this->id = $id;
 			
@@ -136,7 +146,7 @@
 		}
 
 
-
+		//Retorna los nombre de todas las columnas de una tabla
 		private function getDataNameColumn(){
 			$this->query = "SELECT * FROM $this->table";
 			$query = $this->con->query($this->query);
