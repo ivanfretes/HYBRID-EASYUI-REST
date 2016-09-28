@@ -28,7 +28,7 @@
 		}
 
 		public function __construct(){
-			@ $this->con = new Mysqli("localhost","root","admin123","coopfuna");
+			@ $this->con = new Mysqli("localhost","root","admin123","DB");
 			if (!$this->con->connect_errno){
 				$this->request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 				$this->table = $this->request[0];
